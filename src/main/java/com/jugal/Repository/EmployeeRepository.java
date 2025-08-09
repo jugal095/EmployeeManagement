@@ -1,4 +1,4 @@
-package com.jugal.Repository;
+package com.jugal.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
