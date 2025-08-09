@@ -6,6 +6,6 @@ import com.jugal.model.Employee;
 
 public interface EmployeeService {
 	
-	public List<Employee> getEmployeesByDept(Long deptId)
+	public List<Employee> getEmployeesByDept(Long deptId);
 
 }
