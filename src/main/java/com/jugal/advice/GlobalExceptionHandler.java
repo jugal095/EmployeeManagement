@@ -5,9 +5,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import com.jugal.exception.CEOAlreadyExistsException;
 import com.jugal.exception.DepartmentAlreadyExistException;
 import com.jugal.exception.DepartmentNotFoundException;
 import com.jugal.exception.ManagerNotFoundException;
+import com.jugal.exception.NewEmployeeException;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
@@ -24,5 +26,15 @@ public class GlobalExceptionHandler {
 	@ExceptionHandler(DepartmentAlreadyExistException.class)
 	public ResponseEntity<String> handleDepartmentAlreadyExistException(DepartmentAlreadyExistException ex) {
 		return new ResponseEntity<>(ex.getMessage(), HttpStatus.CONFLICT);
+	}
+	
+	@ExceptionHandler(CEOAlreadyExistsException.class)
+	public ResponseEntity<String> handleCEOAlreadyExistsException(CEOAlreadyExistsException ex) {
+		return new ResponseEntity<>(ex.getMessage(), HttpStatus.CONFLICT);
+	}
+	
+	@ExceptionHandler(NewEmployeeException.class)
+	public ResponseEntity<String> NewEmployeeException(NewEmployeeException ex) {
+		return new ResponseEntity<>(ex.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
 	}
 }

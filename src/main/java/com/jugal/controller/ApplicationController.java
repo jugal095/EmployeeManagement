@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.jugal.model.Department;
+import com.jugal.model.Employee;
 import com.jugal.model.EmployeeSummary;
 import com.jugal.service.DepartmentService;
 import com.jugal.service.EmployeeService;
@@ -36,9 +37,15 @@ public class ApplicationController {
 		return ResponseEntity.ok(empService.getReportsToManager(id));
 	}
 
-	@PostMapping("/departments")
+	@PostMapping("/department")
 	public ResponseEntity<Department> addDept(@RequestBody Department d) {
 		return ResponseEntity.ok(deptService.addDepartment(d));
 	}
+	
+	@PostMapping("/employee")
+    public ResponseEntity<Employee> addEmployee(@RequestBody Employee e){
+        return ResponseEntity.ok(empService.addEmployee(e));
+    }
+
 
 }
