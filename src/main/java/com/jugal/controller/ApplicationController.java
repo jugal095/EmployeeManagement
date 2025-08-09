@@ -17,6 +17,8 @@ import com.jugal.model.EmployeeSummary;
 import com.jugal.service.DepartmentService;
 import com.jugal.service.EmployeeService;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping("/api")
 public class ApplicationController {
@@ -38,12 +40,12 @@ public class ApplicationController {
 	}
 
 	@PostMapping("/department")
-	public ResponseEntity<Department> addDept(@RequestBody Department d) {
+	public ResponseEntity<Department> addDept(@Valid @RequestBody Department d) {
 		return ResponseEntity.ok(deptService.addDepartment(d));
 	}
 
 	@PostMapping("/employee")
-	public ResponseEntity<Employee> addEmployee(@RequestBody Employee e) {
+	public ResponseEntity<Employee> addEmployee(@Valid @RequestBody Employee e) {
 		return ResponseEntity.ok(empService.addEmployee(e));
 	}
 
