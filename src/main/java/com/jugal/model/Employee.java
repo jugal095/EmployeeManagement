@@ -32,6 +32,7 @@ public class Employee {
     @Column(nullable = false, unique = true)
     private String email;
 
+    @Column(nullable = false)
     private String title;
 
     // CEO does not belong to a dept
