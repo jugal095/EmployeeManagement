@@ -6,11 +6,17 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import com.jugal.exception.DepartmentNotFoundException;
+import com.jugal.exception.ManagerNotFoundException;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
 	@ExceptionHandler(DepartmentNotFoundException.class)
-	public ResponseEntity<String> handleResourceNotFoundException(DepartmentNotFoundException ex) {
+	public ResponseEntity<String> handleDepartmentNotFoundException(DepartmentNotFoundException ex) {
+		return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
+	}
+	
+	@ExceptionHandler(ManagerNotFoundException.class)
+	public ResponseEntity<String> handleManagerNotFoundException(ManagerNotFoundException ex) {
 		return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
 	}
 }

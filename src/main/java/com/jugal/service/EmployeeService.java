@@ -8,5 +8,7 @@ import com.jugal.model.EmployeeSummary;
 public interface EmployeeService {
 	
 	public List<EmployeeSummary> getEmployeesByDept(Long deptId);
+	
+	public List<EmployeeSummary> getReportsToManager(Long managerId);
 
 }

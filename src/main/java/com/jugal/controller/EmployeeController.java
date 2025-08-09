@@ -24,5 +24,10 @@ public class EmployeeController {
     public ResponseEntity<List<EmployeeSummary>>getEmployeesByDept(@PathVariable Long id){
         return ResponseEntity.ok(empService.getEmployeesByDept(id));
     }
+	
+	@GetMapping("/managers/{id}/reports")
+    public ResponseEntity<List<EmployeeSummary>> getReportsToManager(@PathVariable Long id){
+        return ResponseEntity.ok(empService.getReportsToManager(id));
+    }
 
 }
