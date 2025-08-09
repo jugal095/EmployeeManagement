@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.jugal.model.Employee;
+import com.jugal.model.EmployeeSummary;
 import com.jugal.service.EmployeeService;
 
 @RestController
@@ -20,7 +21,7 @@ public class EmployeeController {
 	private EmployeeService empService;
 	
 	@GetMapping("/departments/{id}/employees")
-    public ResponseEntity<List<Employee>>getEmployeesByDept(@PathVariable Long id){
+    public ResponseEntity<List<EmployeeSummary>>getEmployeesByDept(@PathVariable Long id){
         return ResponseEntity.ok(empService.getEmployeesByDept(id));
     }
 
