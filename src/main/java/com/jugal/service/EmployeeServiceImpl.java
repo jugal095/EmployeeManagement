@@ -7,7 +7,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.jugal.exception.BusinessRuleException;
+import com.jugal.exception.DepartmentNotFoundException;
 import com.jugal.model.Department;
 import com.jugal.model.Employee;
 import com.jugal.model.EmployeeSummary;
@@ -25,7 +25,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
 	public List<EmployeeSummary> getEmployeesByDept(Long deptId){
 		 Department d = deptRepo.findById(deptId)
-		            .orElseThrow(() -> new BusinessRuleException("Dept not found"));
+		            .orElseThrow(() -> new DepartmentNotFoundException("Dept not found"));
 		    return empRepo.findByDepartment(d)
 		            .stream()
 		            .map(e -> new EmployeeSummary(e.getId(), e.getName(), e.getEmail(), e.getTitle()))
