@@ -6,11 +6,13 @@ import com.jugal.model.Employee;
 import com.jugal.model.EmployeeSummary;
 
 public interface EmployeeService {
-	
+
 	public List<EmployeeSummary> getEmployeesByDept(Long deptId);
-	
+
 	public List<EmployeeSummary> getReportsToManager(Long managerId);
-	
+
 	public Employee addEmployee(Employee e);
+
+	public Employee moveEmployee(Long empId, Long targetDeptId);
 
 }

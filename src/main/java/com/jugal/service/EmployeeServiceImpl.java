@@ -7,7 +7,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.jugal.exception.CEOAlreadyExistsException;
+import com.jugal.exception.CannotMoveEmployeeException;
 import com.jugal.exception.DepartmentNotFoundException;
+import com.jugal.exception.EmployeeNotFoundException;
 import com.jugal.exception.ManagerNotFoundException;
 import com.jugal.exception.NewEmployeeException;
 import com.jugal.model.Department;
@@ -90,5 +92,46 @@ public class EmployeeServiceImpl implements EmployeeService {
 
 	private Employee getCEO() {
 		return empRepo.findAll().stream().filter(e -> CEO_TITLE.equals(e.getTitle())).findFirst().orElse(null);
+	}
+
+	@Transactional
+	public Employee moveEmployee(Long empId, Long targetDeptId) {
+		Employee emp = empRepo.findById(empId).orElseThrow(() -> new EmployeeNotFoundException("Employee not found"));
+		if (CEO_TITLE.equals(emp.getTitle()))
+			throw new CannotMoveEmployeeException("Cannot move CEO");
+
+		Department target = deptRepo.findById(targetDeptId)
+				.orElseThrow(() -> new DepartmentNotFoundException("Department not found"));
+
+		// manager must be in same dept as employee; so if employee's manager is not in
+		// target dept, move invalid
+		Employee manager = emp.getManager();
+		if (manager == null)
+			throw new CannotMoveEmployeeException("Employee has no manager");
+		if (!CEO_TITLE.equals(manager.getTitle())) {
+			if (manager.getDepartment() == null || !manager.getDepartment().getId().equals(target.getId())) {
+				throw new CannotMoveEmployeeException(
+						"Cannot move employee to target department because current manager is not in that department");
+			}
+		} else {
+			// manager is CEO -> moving employee to different dept while manager is CEO
+			// means ensure no other direct-report from new dept to CEO
+			List<Employee> ceoDirect = empRepo.findByManager(manager);
+			boolean existsSameDept = ceoDirect.stream().anyMatch(x -> x.getDepartment() != null
+					&& x.getDepartment().getId().equals(target.getId()) && !x.getId().equals(emp.getId()));
+			if (existsSameDept)
+				throw new CannotMoveEmployeeException("Target department already has a direct report to CEO");
+		}
+
+		// if employee is department head of current dept, prevent move (or clear head).
+		// To be safe, refuse move unless not dept head.
+		Department curr = emp.getDepartment();
+		if (curr != null && curr.getHead() != null && curr.getHead().getId().equals(emp.getId())) {
+			throw new CannotMoveEmployeeException(
+					"Cannot move department head. Demote head first or change department head.");
+		}
+
+		emp.setDepartment(target);
+		return empRepo.save(emp);
 	}
 }

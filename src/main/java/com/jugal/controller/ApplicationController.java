@@ -41,11 +41,15 @@ public class ApplicationController {
 	public ResponseEntity<Department> addDept(@RequestBody Department d) {
 		return ResponseEntity.ok(deptService.addDepartment(d));
 	}
-	
-	@PostMapping("/employee")
-    public ResponseEntity<Employee> addEmployee(@RequestBody Employee e){
-        return ResponseEntity.ok(empService.addEmployee(e));
-    }
 
+	@PostMapping("/employee")
+	public ResponseEntity<Employee> addEmployee(@RequestBody Employee e) {
+		return ResponseEntity.ok(empService.addEmployee(e));
+	}
+
+	@PostMapping("/employees/{id}/move/{deptId}")
+	public ResponseEntity<Employee> move(@PathVariable Long id, @PathVariable Long deptId) {
+		return ResponseEntity.ok(empService.moveEmployee(id, deptId));
+	}
 
 }
